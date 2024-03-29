@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+project(bin2cpp20 LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQURIED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+add_executable(bin2cpp20 bin2cpp.cpp)
+include_directories({CMAKE_SOURCE_DIR})
+install(TARGETS bin2cpp DESTINATION bin)
