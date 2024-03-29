@@ -1,6 +1,6 @@
 # bin2cpp20
 
-Unix Utility for Transforming a Stream into a C++20 Array, Vector, or String
+Unix Utility for Transforming a Stream into a C++20 Array, Vector, or Array of Strings
 
 % cat *cpp | bin2cpp20 -i stdin -v variablename 
 
