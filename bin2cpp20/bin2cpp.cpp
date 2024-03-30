@@ -85,7 +85,18 @@ int main(int argc, char **argv) {
 			}
 
 			if(input_file == "stdin") {
-				convertStreamToString(sorted, variable_name, std::cin, std::cout);
+				if(output_file.length() == 0) 
+					convertStreamToString(sorted, variable_name, std::cin, std::cout);
+				else {
+					std::fstream file;
+					file.open(output_file, std::ios::out);
+					if(!file.is_open()) {
+						std::cerr << "Error could not open output file\n";
+						return EXIT_FAILURE;
+					}
+					convertStreamToString(sorted, variable_name, std::cin, file);
+					file.close();
+				}
 				return EXIT_SUCCESS;
 			}
 			std::fstream file;
