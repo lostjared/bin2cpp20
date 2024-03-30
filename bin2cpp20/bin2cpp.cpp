@@ -249,6 +249,9 @@ bool is_Valid(const std::string &name) {
 std::string convertString(const std::string &s) {
 	std::string temp;
 	for(std::size_t i = 0; i < s.length(); ++i) {
+		if(s[i] == '\r') {
+			continue; // eat token
+		} else
 		if(s[i] == '\"' || s[i] == '\\') {
 			temp += "\\";
 			temp += s[i];
