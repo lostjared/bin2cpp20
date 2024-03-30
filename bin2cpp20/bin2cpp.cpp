@@ -19,11 +19,11 @@ bin2cpp20 - conversion tool
 #include <string>
 #include <vector>
 
-#define VERSION_INFO "1.0.1"
+#define VERSION_INFO "1.1.0"
 
 void convertStreamToVector(std::string_view name, std::istream &in, std::ostream &out);
 void convertStreamToArray(std::string_view name, const char *data, std::size_t length, std::ostream &out);
-void convertStreamToString(bool sorted, std::string_view name, std::istream &in, std::ostream &out);
+void convertStreamToString(bool unicode, bool sorted, std::string_view name, std::istream &in, std::ostream &out);
 void stringOutputVector(const std::vector<unsigned char> &v);
 template <std::size_t N>
 void stringOutputArray(std::array<unsigned char, N> &a);
@@ -37,12 +37,13 @@ int main(int argc, char **argv) {
 	}
 	try {
 		Argz<std::string> argz{argc, argv};
-		argz.addOptionSingleValue('i', "input file/stdin").addOptionDoubleValue('I', "input", "input file/stdin").addOptionSingleValue('o', "output").addOptionDoubleValue('O', "output", "output file").addOptionSingle('h', "help").addOptionDouble('H', "help", "help message").addOptionSingleValue('v', "variable name").addOptionDoubleValue('V', "variable", "variable name").addOptionSingle('s', "string output").addOptionDouble('S', "string", "string output").addOptionSingle('z', "sort").addOptionDouble('Z', "sort", "sort string");
+		argz.addOptionSingleValue('i', "input file/stdin").addOptionDoubleValue('I', "input", "input file/stdin").addOptionSingleValue('o', "output").addOptionDoubleValue('O', "output", "output file").addOptionSingle('h', "help").addOptionDouble('H', "help", "help message").addOptionSingleValue('v', "variable name").addOptionDoubleValue('V', "variable", "variable name").addOptionSingle('s', "string output").addOptionDouble('S', "string", "string output").addOptionSingle('z', "sort").addOptionDouble('Z', "sort", "sort string").addOptionSingle('u', "Unicode").addOptionDouble('U', "unicode", "unicode");
 		Argument<std::string> arg;
 		int value{};
 		std::string input_file, output_file, variable_name;
 		bool as_string {false};
 		bool sorted {false};
+		bool unicode {false};
 		while((value = argz.proc(arg)) != -1) {
 			switch(value) {
 			case 'i':
@@ -71,6 +72,10 @@ int main(int argc, char **argv) {
 			case 'Z':
 				sorted = true;
 				break;
+			case 'u':
+			case 'U':
+				unicode = true;
+				break;
 			}
 		}
 		if(input_file.length() == 0) {
@@ -90,7 +95,7 @@ int main(int argc, char **argv) {
 
 			if(input_file == "stdin") {
 				if(output_file.length() == 0) 
-					convertStreamToString(sorted, variable_name, std::cin, std::cout);
+					convertStreamToString(unicode, sorted, variable_name, std::cin, std::cout);
 				else {
 					std::fstream file;
 					const auto pos{output_file.rfind(".hpp")};
@@ -104,7 +109,7 @@ int main(int argc, char **argv) {
 					file << "#ifndef __STR_H_HPP_" << variable_name << "\n";
 					file << "#define __STR_H_HPP_" << variable_name << "\n";
 					file << "#include<string>\n";
-					convertStreamToString(sorted, variable_name, std::cin, file);
+					convertStreamToString(unicode, sorted, variable_name, std::cin, file);
 					file << "#endif\n\n";
 					file.close();
 				}
@@ -128,7 +133,7 @@ int main(int argc, char **argv) {
 				} else {
 					variable_name = "str_" + variable_name;
 					std::istringstream in(buf.get());
-					convertStreamToString(sorted, variable_name, in, std::cout);
+					convertStreamToString(unicode, sorted, variable_name, in, std::cout);
 				}
 				return EXIT_SUCCESS;
 			} else {
@@ -151,7 +156,7 @@ int main(int argc, char **argv) {
 				} else {
 					file << "#include<string>\n\n";
 					std::istringstream in{buf.get()};
-					convertStreamToString(sorted, variable_name, in, file);
+					convertStreamToString(unicode, sorted, variable_name, in, file);
 				}
 				file << "\n\n#endif\n";
 				file.close();
@@ -188,8 +193,11 @@ void convertStreamToArray(std::string_view name, const char *data, std::size_t l
 	out << hex << "};\n";
 }
 
-void convertStreamToString(bool sorted, std::string_view name, std::istream &in, std::ostream &out) {
-	out << "inline const std::string " << name << "[] = {";
+void convertStreamToString(bool unicode, bool sorted, std::string_view name, std::istream &in, std::ostream &out) {
+	if(unicode == false)
+		out << "inline const std::string " << name << "[] = {";
+	else
+		out << "inline const std::wstring " << name << "[] = {";
 	std::size_t index{};
 	std::size_t length{};
 	std::vector<std::string> v;
@@ -208,7 +216,10 @@ void convertStreamToString(bool sorted, std::string_view name, std::istream &in,
 	for(auto &line : v) {
 		index += line.length() + 1;
 		if(line.length() > 0) {
-			out << "\"" << convertString(line) << "\"";
+			if(unicode == false)
+				out << "\"" << convertString(line) << "\"";
+			else
+				out << "L\"" << convertString(line) << "\"";
 			if(index < length)
 				out << ",";
 		}
