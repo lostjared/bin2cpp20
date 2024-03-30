@@ -99,6 +99,7 @@ int main(int argc, char **argv) {
 					}
 					file << "#ifndef __STR_H_HPP_" << variable_name << "\n";
 					file << "#define __STR_H_HPP_" << variable_name << "\n";
+					file << "#include<string>\n";
 					convertStreamToString(sorted, variable_name, std::cin, file);
 					file << "#endif\n\n";
 					file.close();
