@@ -19,6 +19,8 @@ bin2cpp20 - conversion tool
 #include <string>
 #include <vector>
 
+#define VERSION_INFO "1.0.0"
+
 void convertStreamToVector(std::string_view name, std::istream &in, std::ostream &out);
 void convertStreamToArray(std::string_view name, const char *data, std::size_t length, std::ostream &out);
 void convertStreamToString(bool sorted, std::string_view name, std::istream &in, std::ostream &out);
@@ -53,6 +55,8 @@ int main(int argc, char **argv) {
 				break;
 			case 'H':
 			case 'h':
+				std::cout << "bin2cpp20 v" << VERSION_INFO << "\n";
+				std::cout << "written by Jared Bruni\n";
 				argz.help(std::cout);
 				return EXIT_SUCCESS;
 			case 'v':
