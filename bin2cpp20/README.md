@@ -1,38 +1,68 @@
-# bin2cpp20
+# bin2cpp20 - Binary to C++20 Source Conversion Tool
 
-Unix Utility for Transforming a Stream into a C++20 Array, Vector, or Array of Strings
+## Overview
 
-% cat *cpp | bin2cpp20 -i stdin -v variablename 
+`bin2cpp20` is a versatile command-line utility designed to convert binary files/string data into C++20 compliant source code. This enables the embedding of binary data directly within C++ applications in a portable and efficient manner. The tool offers flexibility in output formats, including vectors, arrays, and strings, and supports additional options like sorting and Unicode handling.
 
-% bin2cpp20 -i filename -o outputheader -v variable 
+## Requirements
 
-% bin2cpp20 -i filename -o -v variable -s --sort
+- Compiler: GCC 13.2 or greater
+- C++20 compliant environment
 
-or arguments:
+## Compilation
 
-jared@iLostSideDead bin2cpp % bin2cpp20 -h
+To compile `bin2cpp20`, use the following command:
 
--h              help      
+```sh
+g++ -std=c++20 -o bin2cpp20 your_source_file.cpp
+```
 
--i              input file/stdin
+Replace `your_source_file.cpp` with the path to the `bin2cpp20` source code.
 
--o              output    
+## Usage
 
--s              string output
+The basic usage of the tool can be invoked as follows:
 
--v              variable name
+```sh
+bin2cpp20 [options]
+```
 
--z              sort      
+### Key Features
 
---help          help message
+- **Input from file or standard input**: Specify an input binary file or use standard input.
+- **Output to standard output or file**: Direct the converted C++ source to standard output or a specified file.
+- **Variable naming**: Define custom variable names for the generated code.
+- **Output formats**: Choose between vector, array, or string representations of the binary data.
+- **Sorting and Unicode options**: Sort strings in the output or handle Unicode data correctly.
 
---input         input file/stdin
+### Options
 
---output        output file
+- `-i, --input <file/stdin>`: Specify the input source. Use "stdin" to read from standard input.
+- `-o, --output <file>`: Specify the output file. If not provided, output will be directed to standard output.
+- `-v, --variable <name>`: Set the name of the generated variable. This is required.
+- `-s, --string output`: Generate output as a string.
+- `-z, --sort`: Sort the output string. Applicable only with string output.
+- `-u, --Unicode`: Treat the input as Unicode. Applicable only with string output.
+- `-h, --help`: Display the help message and exit.
 
---string        string output
+### Examples
 
---variable      variable name
+**Convert a binary file to a vector:**
 
---sort          sort string
+```sh
+bin2cpp20 -i path/to/input/file -o path/to/output.hpp -v variable_name
+```
 
+**Convert standard input to a sorted Unicode string:**
+
+```sh
+cat path/to/input | bin2cpp20 -s -u -z -v variable_name -o path/to/output.hpp
+```
+
+## Additional Notes
+
+- Ensure variable names are valid C++ identifiers.
+- Input files are read in binary mode, preserving the integrity of binary data.
+- The tool automatically appends `.hpp` to output filenames if not present.
+
+For issues or contributions, please visit the [project repository](#).
