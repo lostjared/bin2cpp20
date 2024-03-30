@@ -97,7 +97,10 @@ int main(int argc, char **argv) {
 						std::cerr << "Error could not open output file\n";
 						return EXIT_FAILURE;
 					}
+					file << "#ifndef __STR_H_HPP_" << variable_name << "\n";
+					file << "#define __STR_H_HPP_" << variable_name << "\n";
 					convertStreamToString(sorted, variable_name, std::cin, file);
+					file << "#endif\n\n";
 					file.close();
 				}
 				return EXIT_SUCCESS;
@@ -206,7 +209,7 @@ void convertStreamToString(bool sorted, std::string_view name, std::istream &in,
 				out << ",";
 		}
 	}
-	out << "};\n\n";
+	out << "};\n";
 	out << "unsigned long " << name << "_length {" << v.size() << "};\n\n";
 }
 
