@@ -196,7 +196,7 @@ void convertStreamToString(bool sorted, std::string_view name, std::istream &in,
 	while(!in.eof()) {
 		std::string line;
 		std::getline(in, line);
-		if(in) {
+		if(in && line.length() > 0) {
 			v.push_back(line);
 			length += line.length() + 1;
 		}
