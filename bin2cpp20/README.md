@@ -62,7 +62,7 @@ bin2cpp20 -i path/to/input/file -o path/to/output.hpp -v variable_name
 **Convert standard input to a sorted Unicode string:**
 
 ```sh
-cat path/to/input | bin2cpp20 =i stdin -s -u -z -v variable_name -o path/to/output.hpp
+cat path/to/input | bin2cpp20 -i stdin -s -u -z -v variable_name -o path/to/output.hpp
 ```
 
 ## Additional Notes
