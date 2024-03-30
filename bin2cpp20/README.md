@@ -53,7 +53,7 @@ bin2cpp20 [options]
 
 ### Examples
 
-**Convert a binary file to a vector:**
+**Convert a binary file to a arrau:**
 
 ```sh
 bin2cpp20 -i path/to/input/file -o path/to/output.hpp -v variable_name
