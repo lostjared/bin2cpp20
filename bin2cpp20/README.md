@@ -18,7 +18,7 @@ make -f Makefile.ux
 ```
 or
 ```sh
-mkdir buid && cd build
+mkdir build && cd build
 cmake ..
 make -j4
 sudo make install 
