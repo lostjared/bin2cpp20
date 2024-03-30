@@ -150,7 +150,6 @@ int main(int argc, char **argv) {
 					convertStreamToArray(variable_name + "_arr", buf.get(), len, file);
 				} else {
 					file << "#include<string>\n\n";
-					variable_name = "str_" + variable_name;
 					std::istringstream in{buf.get()};
 					convertStreamToString(sorted, variable_name, in, file);
 				}
