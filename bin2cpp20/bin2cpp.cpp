@@ -34,13 +34,13 @@ int main(int argc, char **argv) {
 		return EXIT_SUCCESS;
 	}
 	try {
-		Argz<std::string> argz(argc, argv);
+		Argz<std::string> argz{argc, argv};
 		argz.addOptionSingleValue('i', "input file/stdin").addOptionDoubleValue('I', "input", "input file/stdin").addOptionSingleValue('o', "output").addOptionDoubleValue('O', "output", "output file").addOptionSingle('h', "help").addOptionDouble('H', "help", "help message").addOptionSingleValue('v', "variable name").addOptionDoubleValue('V', "variable", "variable name").addOptionSingle('s', "string output").addOptionDouble('S', "string", "string output").addOptionSingle('z', "sort").addOptionDouble('Z', "sort", "sort string");
 		Argument<std::string> arg;
 		int value{};
 		std::string input_file, output_file, variable_name;
-		bool as_string = false;
-		bool sorted = false;
+		bool as_string {false};
+		bool sorted {false};
 		while((value = argz.proc(arg)) != -1) {
 			switch(value) {
 			case 'i':
@@ -129,7 +129,7 @@ int main(int argc, char **argv) {
 				} else {
 					file << "#include<string>\n\n";
 					variable_name = "str_" + variable_name;
-					std::istringstream in(buf.get());
+					std::istringstream in{buf.get()};
 					convertStreamToString(sorted, variable_name, in, file);
 				}
 				file << "\n\n#endif\n";
@@ -145,8 +145,6 @@ int main(int argc, char **argv) {
 
 void convertStreamToVector(std::string_view name, std::istream &in, std::ostream &out) {
 	out << "inline const std::vector<unsigned char> " << name << " {";
-	std::size_t index = 0;
-
 	while(!in.eof()) {
 		uint8_t c{};
 		in.read(reinterpret_cast<char *>(&c), sizeof(uint8_t));
@@ -211,7 +209,7 @@ void stringOutputArray(std::array<unsigned char, N> &a) {
 }
 
 bool is_Valid(const std::string &name) {
-	std::regex pattern("^[a-zA-Z_][a-zA-Z0-9_]*");
+	std::regex pattern{"^[a-zA-Z_][a-zA-Z0-9_]*"};
 	return std::regex_match(name, pattern);
 }
 
