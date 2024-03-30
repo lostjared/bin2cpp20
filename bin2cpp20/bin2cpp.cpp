@@ -19,7 +19,7 @@ bin2cpp20 - conversion tool
 #include <string>
 #include <vector>
 
-#define VERSION_INFO "1.1.0"
+#define VERSION_INFO "1.1.1"
 
 void convertStreamToVector(std::string_view name, std::istream &in, std::ostream &out);
 void convertStreamToArray(std::string_view name, const char *data, std::size_t length, std::ostream &out);
