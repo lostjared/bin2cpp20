@@ -52,7 +52,7 @@ bin2cpp20 [options]
 
 ### Examples
 
-**Convert a binary file to a arrau:**
+**Convert a binary file to a array:**
 
 ```sh
 bin2cpp20 -i path/to/input/file -o path/to/output.hpp -v variable_name
