@@ -14,10 +14,16 @@
 To compile `bin2cpp20`, use the following command:
 
 ```sh
-g++ -std=c++20 -o bin2cpp20 your_source_file.cpp
+make -f Makefile.ux 
+```
+or
+```sh
+mkdir buid && cd build
+cmake ..
+make -j4
+sudo make install 
 ```
 
-Replace `your_source_file.cpp` with the path to the `bin2cpp20` source code.
 
 ## Usage
 
