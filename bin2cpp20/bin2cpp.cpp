@@ -192,7 +192,8 @@ void convertStreamToString(bool sorted, std::string_view name, std::istream &in,
 				out << ",";
 		}
 	}
-	out << "};\n";
+	out << "};\n\n";
+	out << "unsigned long " << name << "_length {" << v.size() << "};\n\n";
 }
 
 void stringOutputVector(const std::vector<unsigned char> &v) {
