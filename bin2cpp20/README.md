@@ -48,7 +48,7 @@ bin2cpp20 [options]
 - `-v, --variable <name>`: Set the name of the generated variable. This is required.
 - `-s, --string output`: Generate output as a string.
 - `-z, --sort`: Sort the output string. Applicable only with string output.
-- `-u, --Unicode`: Treat the input as Unicode. Applicable only with string output.
+- `-u, --unicode`: Treat the input as Unicode. Applicable only with string output.
 - `-h, --help`: Display the help message and exit.
 
 ### Examples
