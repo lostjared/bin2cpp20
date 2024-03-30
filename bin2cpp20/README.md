@@ -6,8 +6,7 @@
 
 ## Requirements
 
-- Compiler: GCC 13.2 or greater
-- C++20 compliant environment
+- Fully C++20 compliant environment
 
 ## Compilation
 
