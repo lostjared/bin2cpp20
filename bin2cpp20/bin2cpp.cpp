@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 			case 'H':
 			case 'h':
 				std::cout << "bin2cpp20 v" << VERSION_INFO << "\n";
-				std::cout << "written by Jared Bruni\n";
+				std::cout << "written by Jared Bruni [ http://lostsidedead.biz ]\n";
 				argz.help(std::cout);
 				return EXIT_SUCCESS;
 			case 'v':
