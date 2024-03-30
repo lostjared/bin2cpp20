@@ -69,5 +69,3 @@ cat path/to/input | bin2cpp20 -i stdin -s -u -z -v variable_name -o path/to/outp
 - Ensure variable names are valid C++ identifiers.
 - Input files are read in binary mode, preserving the integrity of binary data.
 - The tool automatically appends `.hpp` to output filenames if not present.
-
-For issues or contributions, please visit the [project repository](#).
