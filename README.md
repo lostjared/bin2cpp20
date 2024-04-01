@@ -4,6 +4,10 @@
 
 `bin2cpp20` is a versatile command-line utility designed to convert binary files/string data into C++20 compliant source code. This enables the embedding of binary/string data directly within C++ applications in a portable and efficient manner. The tool offers flexibility in output formats, including vectors, arrays, and strings, and supports additional options like sorting and Unicode handling.
 
+## Motivation
+The motivation for this application was to be able to quickly generate arrays of binary/string data that I could embed in my C++20 code. Also to test out my new argument parsing header file argz.hpp.
+
+
 ## Requirements
 
 - Fully C++20 compliant environment
