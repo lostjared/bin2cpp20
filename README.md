@@ -7,6 +7,8 @@
 ## Motivation
 The motivation for this application was to be able to quickly generate arrays of binary/string data that I could embed in my C++20 code. Also to test out my new argument parsing header file argz.hpp.
 
+## Demonstration
+Here is a video demo of the application: https://youtu.be/umDLwADWRmM
 
 ## Requirements
 
