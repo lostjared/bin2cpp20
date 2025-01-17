@@ -22,7 +22,7 @@ bin2cpp20 - conversion tool
 #define VERSION_INFO "1.1.1"
 
 void convertStreamToVector(std::string_view name, std::istream &in, std::ostream &out);
-void convertStreamToArray(std::string_view name, const char *data, std::size_t length, std::ostream &out);
+void convertStreamToArray(bool c_expr, std::string_view name, const char *data, std::size_t length, std::ostream &out);
 void convertStreamToString(bool unicode, bool sorted, std::string_view name, std::istream &in, std::ostream &out);
 void stringOutputVector(const std::vector<unsigned char> &v);
 template <std::size_t N>
@@ -37,13 +37,15 @@ int main(int argc, char **argv) {
 	}
 	try {
 		Argz<std::string> argz{argc, argv};
-		argz.addOptionSingleValue('i', "input file/stdin").addOptionDoubleValue('I', "input", "input file/stdin").addOptionSingleValue('o', "output").addOptionDoubleValue('O', "output", "output file").addOptionSingle('h', "help").addOptionDouble('H', "help", "help message").addOptionSingleValue('v', "variable name").addOptionDoubleValue('V', "variable", "variable name").addOptionSingle('s', "string output").addOptionDouble('S', "string", "string output").addOptionSingle('z', "sort").addOptionDouble('Z', "sort", "sort string").addOptionSingle('u', "Unicode").addOptionDouble('U', "unicode", "unicode");
+		argz.addOptionSingleValue('i', "input file/stdin").addOptionDoubleValue('I', "input", "input file/stdin").addOptionSingle('c', "Use constexpr").addOptionDouble('C', "constexpr", "Use constexpr").addOptionSingleValue('o', "output").addOptionDoubleValue('O', "output", "output file").addOptionSingle('h', "help").addOptionDouble('H', "help", "help message").addOptionSingleValue('v', "variable name").addOptionDoubleValue('V', "variable", "variable name").addOptionSingle('s', "string output").addOptionDouble('S', "string", "string output").addOptionSingle('z', "sort").addOptionDouble('Z', "sort", "sort string").addOptionSingle('u', "Unicode").addOptionDouble('U', "unicode", "unicode");
 		Argument<std::string> arg;
 		int value{};
 		std::string input_file, output_file, variable_name;
 		bool as_string {false};
-		bool sorted {false};
-		bool unicode {false};
+		bool sorted{false};
+		bool unicode{false};
+		bool c_expr{false};
+
 		while((value = argz.proc(arg)) != -1) {
 			switch(value) {
 			case 'i':
@@ -76,6 +78,11 @@ int main(int argc, char **argv) {
 			case 'U':
 				unicode = true;
 				break;
+			case 'c':
+			case 'C':
+				c_expr = true;
+				break;
+
 			}
 		}
 		if(input_file.length() == 0) {
@@ -129,7 +136,7 @@ int main(int argc, char **argv) {
 			if(output_file.length() == 0) {
 				if(as_string == false) {
 					variable_name = "bin_" + variable_name;
-					convertStreamToArray(variable_name + "_arr", buf.get(), len, std::cout);
+					convertStreamToArray(c_expr, variable_name + "_arr", buf.get(), len, std::cout);
 				} else {
 					variable_name = "str_" + variable_name;
 					std::istringstream in(buf.get());
@@ -152,7 +159,7 @@ int main(int argc, char **argv) {
 				if(as_string == false) {
 					file << "#include<array>\n\n";
 					variable_name = "bin_" + variable_name;
-					convertStreamToArray(variable_name + "_arr", buf.get(), len, file);
+					convertStreamToArray(c_expr, variable_name + "_arr", buf.get(), len, file);
 				} else {
 					file << "#include<string>\n\n";
 					std::istringstream in{buf.get()};
@@ -170,7 +177,7 @@ int main(int argc, char **argv) {
 }
 
 void convertStreamToVector(std::string_view name, std::istream &in, std::ostream &out) {
-	out << "inline const std::vector<unsigned char> " << name << " {";
+	out << "inline const std::vector<unsigned chassr> " << name << " {";
 	while(!in.eof()) {
 		uint8_t c{};
 		in.read(reinterpret_cast<char *>(&c), sizeof(uint8_t));
@@ -183,8 +190,12 @@ void convertStreamToVector(std::string_view name, std::istream &in, std::ostream
 	out << "};\n";
 }
 
-void convertStreamToArray(std::string_view name, const char *data, std::size_t length, std::ostream &out) {
-	out << "inline const std::array<unsigned char, " << length + 1 << "> " << name << " {";
+void convertStreamToArray(bool c_expr, std::string_view name, const char *data, std::size_t length, std::ostream &out) {
+	std::string e_type{"inline"};
+	if(c_expr == true) 
+		e_type = "constexpr";
+		
+	out << e_type << " std::array<unsigned char, " << length + 1 << "> " << name << " {";
 	for(std::size_t i = 0; i < length; ++i) {
 		const std::string hex{std::format("0x{:X}", static_cast<uint8_t>(data[i]))};
 		out << hex << ",";
